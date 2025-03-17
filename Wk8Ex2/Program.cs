@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using System.IO;
 
 namespace Wk8Ex2
 {
@@ -23,12 +24,15 @@ namespace Wk8Ex2
             };
 
             //serialize the book object
-            string serializedBook = SerializeToJson("JsonBook", LOTR);
+            string serializedBook = SerializeToJson("filename.txt", LOTR);
             //deserialize to object
             Book deserializedBook = DeserializeFromJson(serializedBook);
 
-            //output serialized and deserialized book information
-            Console.WriteLine("Serialized to Json: " + serializedBook);
+            //output the serialized book information
+            string readSerText = File.ReadAllText(serializedBook);
+            Console.WriteLine(readSerText);
+
+            //output the deserialized book information
             Console.WriteLine($"Deserialized from Json: {deserializedBook.Title}, {deserializedBook.Author}, {deserializedBook.Year}");
 
             //wait for user input before closing
@@ -38,16 +42,21 @@ namespace Wk8Ex2
         //create a method that serializes a book object
         static string SerializeToJson(string fileName, Book book)
         {
+            //create file and write the book object to it
+            File.WriteAllText(fileName, Convert.ToString(book));
+
             //serialize object to JSON
-            fileName = JsonSerializer.Serialize<Book>(book);
+            string serialized = JsonSerializer.Serialize<Book>(book);
 
             //return fileName for the main method
-            return fileName;
+            return serialized;
         }
 
         //create a method that deserializes a book object
         static Book DeserializeFromJson(string fileName)
         {
+            //creat
+
             //deserialize JSON to object
             Book deserializedBook = JsonSerializer.Deserialize<Book>(fileName);
 
